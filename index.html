@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motorcycle ORCR Cash Loan Application</title>
+  <link href="https://fonts.googleapis.com/css2?family=Aptos&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Aptos', sans-serif;
+      background: #fff;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #800000;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 3px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .button-group {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      background: #800000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #660000;
+    }
+    #downloadCSV {
+      margin-top: 20px;
+      display: none;
+    }
+    .intro-container {
+      background: linear-gradient(to bottom right, rgba(163, 0, 0, 0.85), rgba(255, 77, 77, 0.85)), url('background.jpg') no-repeat center center / cover;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .intro-container h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .intro-container h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .intro-container p {
+      font-size: 1.1em;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <form id="loanForm">
+    <!-- Page 0: Intro Page -->
+    <div class="page active" id="page0">
+      <div class="intro-container">
+        <h1>Do You Have a Motorcycle?</h1>
+        <h2>Get up to <strong>₱150,000</strong>!</h2>
+        <p>I-collateral mo lang ang OR/CR ng motor mo — no need for credit card, payslip, or property!</p>
+        <p>This exclusive loan offer is fast, secure, and designed for motorcycle owners like you.</p>
+        <p>Apply now and find out how much you can borrow.</p>
+        <div class="button-group" style="justify-content: center;">
+          <button type="button" onclick="nextPage()">APPLY NOW</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 1: Consent and Privacy -->
+    <div class="page" id="page1">
+      <h2>Consent & Privacy Notice</h2>
+      <p>By proceeding, you agree that your information will be collected for the purpose of processing your loan application. Your data will be kept confidential in accordance with the Data Privacy Act.</p>
+      <div class="form-group" style="text-align: center;">
+        <input type="checkbox" id="consentCheckbox" required> I agree to the Privacy Notice
+      </div>
+      <div class="button-group">
+        <button type="button" id="proceedButton" onclick="nextPage()" disabled>Proceed</button>
+      </div>
+    </div>
+
+    <!-- Page 2: Customer Information -->
+    <div class="page" id="page2">
+      <h2>Your Information</h2>
+      <div class="form-group">
+        <label for="employmentStatus">Employment Status:</label>
+        <select id="employmentStatus" required>
+          <option value="">Select</option>
+          <option value="Employed">Employed</option>
+          <option value="Self-employed">Self-employed</option>
+          <option value="Unemployed">Unemployed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="monthlyIncome">Monthly Income (₱):</label>
+        <input type="text" id="monthlyIncome" required placeholder="₱0.00" oninput="formatCurrency(this)">
+      </div>
+      <div class="form-group">
+        <label for="mobileNumber">Mobile Number:</label>
+        <input type="text" id="mobileNumber" required>
+      </div>
+      <div class="button-group">
+        <button type="button" onclick="prevPage()">Previous</button>
+        <button type="button" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+
+    <!-- Page 3: Loan Offer -->
+    <div class="page" id="page3">
+      <h2>Loan Offer</h2>
+      <div class="form-group">
+        <label for="loanAmount">Loan Amount (₱):</label>
+        <input type="number" id="loanAmount" min="5000" max="150000" step="5000" value="75000" required>
+      </div>
+      <div class="form-group">
+        <label for="loanTerm">Loan Term (months):</label>
+        <select id="loanTerm" required>
+          <option value="">Select</option>
+          <option value="6">6</option>
+          <option value="12">12</option>
+          <option value="18">18</option>
+          <option value="24">24</option>
+          <option value="30">30</option>
+          <option value="36">36</option>
+          <option value="42">42</option>
+          <option value="48">48</option>
+        </select>
+      </div>
+      <div class="button-group">
+        <button type="button" onclick="prevPage()">Previous</button>
+        <button type="button" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+
+    <!-- Page 4: Motorcycle Details -->
+    <div class="page" id="page4">
+      <h2>Motorcycle Details</h2>
+      <div class="form-group">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" required>
+      </div>
+      <div class="form-group">
+        <label for="model">Model:</label>
+        <input type="text" id="model" required>
+      </div>
+      <div class="form-group">
+        <label for="year">Year:</label>
+        <input type="number" id="year" required>
+      </div>
+      <div class="form-group">
+        <label for="plate">Plate Number:</label>
+        <input type="text" id="plate" required>
+      </div>
+      <div class="form-group">
+        <label for="estimatedPurchaseAmount">Estimated Purchase Amount (₱):</label>
+        <input type="text" id="estimatedPurchaseAmount" required placeholder="₱0.00" oninput="formatCurrency(this)">
+      </div>
+      <div class="button-group">
+        <button type="button" onclick="prevPage()">Previous</button>
+        <button type="button" onclick="submitApplication()">Submit Application</button>
+      </div>
+    </div>
+
+    <!-- Page 5: Thank You -->
+    <div class="page" id="page5">
+      <h2>Thank you for applying and taking the quick survey!</h2>
+      <p>Note that this form does not guarantee that you will receive an approved offer.</p>
+      <div class="button-group">
+        <button type="button" onclick="closeForm()">Close</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  let currentPage = 0;
+  const pages = document.querySelectorAll(".page");
+
+  // Show the current page
+  function showPage(n) {
+    pages.forEach((page, index) => {
+      page.classList.toggle("active", index === n);
+    });
+  }
+
+  // Proceed to the next page
+  function nextPage() {
+    if (currentPage === 1 && !document.getElementById('consentCheckbox').checked) {
+      alert("You must agree to the Privacy Notice.");
+      return;
+    }
+    currentPage++;
+    if (currentPage >= pages.length) currentPage = pages.length - 1;
+    showPage(currentPage);
+  }
+
+  // Go to the previous page
+  function prevPage() {
+    currentPage--;
+    if (currentPage < 0) currentPage = 0;
+    showPage(currentPage);
+  }
+
+  // Format currency input (Peso)
+  function formatCurrency(input) {
+    let value = input.value.replace(/[^\d.]/g, '');
+    if (value) {
+      value = parseFloat(value).toLocaleString();
+      input.value = '₱' + value;
+    }
+  }
+
+  // Submit the application
+  function submitApplication() {
+    alert("Application Submitted!");
+    nextPage();
+  }
+
+  // Close the form
+  function closeForm() {
+    window.close();
+    window.location.href = 'about:blank';
+  }
+
+  // Enable or disable the proceed button based on consent checkbox
+  document.getElementById('consentCheckbox').addEventListener('change', function() {
+    document.getElementById('proceedButton').disabled = !this.checked;
+  });
+</script>
+
+</body>
+</html>
